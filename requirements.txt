@@ -1,0 +1,8 @@
+Django
+gunicorn
+mysqlclient
+python-dotenv
+openai
+PyPDF2
+opencv-python
+numpy
