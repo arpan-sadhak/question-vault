@@ -8,5 +8,5 @@ PyPDF2
 opencv-python
 numpy
 pymysql
-
+cryptography
 mysql-connector-python
