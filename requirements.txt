@@ -1,12 +1,10 @@
-Django
-mysql
+Django>=4.2
 gunicorn
-mysqlclient>=2.2.1
+mysqlclient==2.2.4
+mysql-connector-python
 python-dotenv
 openai
 PyPDF2
 opencv-python
 numpy
-pymysql
 cryptography
-mysql-connector-python
