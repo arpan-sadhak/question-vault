@@ -31,9 +31,15 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG") == "True"
 
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(","),"https://question-vault-production.up.railway.app"
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://question-vault-production.up.railway.app",
+]
 
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = "Lax"
 
 # Application definition
 
