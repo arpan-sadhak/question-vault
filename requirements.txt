@@ -1,4 +1,5 @@
 Django
+mysql
 gunicorn
 mysqlclient
 python-dotenv
