@@ -33,8 +33,19 @@ DEBUG = os.getenv("DEBUG") == "True"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
+# ✅ Render safety fallback
+if ALLOWED_HOSTS == [""] or not ALLOWED_HOSTS:
+    ALLOWED_HOSTS = [
+        "127.0.0.1",
+        "localhost",
+        ".onrender.com",
+    ]
+
+
 CSRF_TRUSTED_ORIGINS = [
     "https://question-vault-production.up.railway.app",
+    "https://*.onrender.com",
+    "https://question-vault-0eqh.onrender.com",
 ]
 
 CSRF_COOKIE_SECURE = True
@@ -68,18 +79,19 @@ ROOT_URLCONF = 'qbank.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR,"templates"],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],   # ✅ FIXED
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'qbank.wsgi.application'
 
@@ -91,16 +103,28 @@ WSGI_APPLICATION = 'qbank.wsgi.application'
 
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': os.getenv("DB_Db_ENGINE"),
-        'NAME': os.getenv("DB_NAME"),
-        'USER': os.getenv("DB_USER"),
-        'PASSWORD': os.getenv("DB_PASSWORD"),
-        'HOST': os.getenv("DB_HOST"),
-        'PORT': os.getenv("DB_PORT"),
+DB_ENGINE = os.getenv("DB_ENGINE")  # ✅ correct key
+
+if DB_ENGINE:
+    DATABASES = {
+        "default": {
+            "ENGINE": DB_ENGINE,
+            "NAME": os.getenv("DB_NAME", ""),
+            "USER": os.getenv("DB_USER", ""),
+            "PASSWORD": os.getenv("DB_PASSWORD", ""),
+            "HOST": os.getenv("DB_HOST", ""),
+            "PORT": os.getenv("DB_PORT", ""),
+        }
     }
-}
+else:
+    # ✅ fallback database so server always boots on Render
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+
 
 
 
